@@ -16,13 +16,17 @@ private:
 	Operation op;
 
 public:
-	Vector() : data(nullptr) {};
+	Vector() : data(nullptr) {
+
+	};
              
-	Vector(int dimensions, int* dimensionSizes) : dimensions(dimensions), dimensionSizes(dimensionSizes) {
+	Vector(int dimensions, int* dimensionSize) : dimensions(dimensions) {
 		// TODO
+		this->dimensionSizes = new int[dimensions];
 		dataSize = 0;
 		for(int i=0; i<dimensions; i++){
-			dataSize *= dimensionSizes[i];
+			this->dimensionSizes[i] = dimensionSize[i];
+			dataSize *= dimensionSize[i];
 		}
 		data = new T[dataSize];
 	}
@@ -31,6 +35,7 @@ public:
              
 	T get(int* coordinates); // TODO
 	void print();
+	~Vector();
 };
 
 
@@ -44,8 +49,16 @@ typename Vector<Tr>::T Vector<Tr>::get(int* coordinates){
 	return 	data[op(coordinates, dimensionSizes, dimensions)];
 }
 
+
 template <typename Tr>
 void Vector<Tr>::print(){
 	
+}
+template <typename Tr>
+Vector<Tr>::~Vector(){
+	dimensions = 0;
+	dataSize = 0;
+	delete[] dimensionSizes;
+	delete[] data;
 }
 #endif
